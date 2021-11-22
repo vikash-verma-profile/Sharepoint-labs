@@ -22,7 +22,12 @@
     "description": { "default": "HelloWorldFromSPFX description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "HelloWorldFromSPFX"
+      "description": "Keyboard Description",
+      "productname":"Keyboard",
+      "productcost":0,
+      "quantity":0,
+      "dicount":0,
+      "netbillamount":0
     }
   }]
 }

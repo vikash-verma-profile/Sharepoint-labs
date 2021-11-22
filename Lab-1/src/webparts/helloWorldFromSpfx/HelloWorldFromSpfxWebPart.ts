@@ -22,6 +22,20 @@ export interface IHelloWorldFromSpfxWebPartProps {
 
 export default class HelloWorldFromSpfxWebPart extends BaseClientSideWebPart<IHelloWorldFromSpfxWebPartProps> {
 
+
+  protected onInit():Promise<void>{
+    console.log("Hi i am loaded !!");
+    console.log(this.properties.productname);
+      return new Promise<void>((resolve,_reject)=>{
+          this.properties.productname="Mouse";
+          this.properties.description="Mouse Description";
+          this.properties.quantity=500;
+          this.properties.productcost=300;
+
+          resolve(undefined);
+
+      });
+  }
   public render(): void {
     this.domElement.innerHTML = `
       <div class="${ styles.helloWorldFromSpfx }">
