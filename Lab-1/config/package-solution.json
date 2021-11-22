@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "lab-1-client-side-solution",
+    "id": "d8dc77a8-4669-4056-b085-d60b52ba6313",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.13.0"
+    }
+  },
+  "paths": {
+    "zippedPackage": "solution/lab-1.sppkg"
+  }
+}
