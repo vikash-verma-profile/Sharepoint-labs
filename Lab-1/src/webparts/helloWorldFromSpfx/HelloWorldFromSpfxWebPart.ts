@@ -94,6 +94,13 @@ protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
                     deferredValidationTime:5000,
                     placeholder:"Please enter product Cost","description":"Number property field"
                   }),
+                  PropertyPaneTextField('quantity', {
+                    label: "Product Quantity",
+                    multiline:false,
+                    resizable:false,
+                    deferredValidationTime:5000,
+                    placeholder:"Please enter product quantity","description":"Number property field"
+                  }),
                 ]
               }
             ]
