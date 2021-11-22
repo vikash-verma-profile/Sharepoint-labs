@@ -28,12 +28,28 @@ export default class HelloWorldFromSpfxWebPart extends BaseClientSideWebPart<IHe
         <div class="${ styles.container }">
           <div class="${ styles.row }">
             <div class="${ styles.column }">
-              <span class="${ styles.title }">Welcome to Vikash!</span>
-              <p class="${ styles.subTitle }">Customize SharePoint experiences using Web Parts.</p>
-              <p class="${ styles.description }">${escape(this.properties.description)}</p>
-              <a href="https://aka.ms/spfx" class="${ styles.button }">
-                <span class="${ styles.label }">Learn more</span>
-              </a>
+             <table>
+             <tr>
+             <td>Product Name</td>
+             <td>${this.properties.productname}</td>
+             </tr>
+             <tr>
+             <td>Description</td>
+             <td>${this.properties.description}</td>
+             </tr>
+             <tr>
+             <td>Product Cost</td>
+             <td>${this.properties.productcost}</td>
+             </tr>
+             <tr>
+             <td>Quantity</td>
+             <td>${this.properties.quantity}</td>
+             </tr>
+             <tr>
+             <td>Bill Amount</td>
+             <td>${this.properties.netbillamount=this.properties.productcost*this.properties.quantity}</td>
+             </tr>
+             </table>
             </div>
           </div>
         </div>
@@ -73,14 +89,14 @@ protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
               {
                 groupName: "Product Details",
                 groupFields: [
-                  PropertyPaneTextField('productname', {
+                  PropertyPaneTextField('productname', {  
                     label: "Product Name",
                     multiline:false,
                     resizable:false,
                     deferredValidationTime:5000,
                     placeholder:"Please enter product name","description":"Name property field"
                   }),
-                  PropertyPaneTextField('productdescription', {
+                  PropertyPaneTextField('description', {
                     label: "Product Description",
                     multiline:true,
                     resizable:false,
