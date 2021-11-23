@@ -46,6 +46,7 @@ export default class CrudDemoWebPart extends BaseClientSideWebPart<ICrudDemoWebP
     <tr>
     <td>
     <input type="Submit" value="Insert Item" id="btnSubmit" />
+    <input type="Submit" value="Update Item" id="btnUpdate" />
     </td>
     </tr>
     </table>
@@ -62,7 +63,40 @@ export default class CrudDemoWebPart extends BaseClientSideWebPart<ICrudDemoWebP
     this.domElement.querySelector("#btnRead").addEventListener('click',()=>{
       this.readListData();
     });
+    this.domElement.querySelector("#btnUpdate").addEventListener('click',()=>{
+      this.updateListItem();
+    });
   }
+
+private updateListItem(){
+  var softwareTitle=document.getElementById('txtSoftwareTitle')["value"];
+  var softwareName=document.getElementById('txtSoftwareName')["value"];
+  var Id=document.getElementById('txtid')["value"];
+  const Url:string=this.context.pageContext.site.absoluteUrl+"/_api/web/lists/getbytitle('SoftwareList')/Items("+Id+")";
+  const itemBody:any={
+    "SoftwareTitle":softwareTitle,
+    "SoftwareName":softwareName
+  }
+  const headers:any={
+    "X-HTTP-Method":"MERGE",
+    "IF-MATCH":"*"
+  }
+  const spHttpClientOptions:ISPHttpClientOptions={
+    "headers":headers,
+    "body":JSON.stringify(itemBody)
+  }
+
+  this.context.spHttpClient.post(Url,SPHttpClient.configurations.v1,spHttpClientOptions).then(
+    (response:SPHttpClientResponse)=>{
+      if(response.status===204){
+        console.log("Updated");
+      }
+      else{
+        console.log("Some error have Ocuured");
+      }
+    }
+  );
+}
 
   private readListData():void{
     let id:string=document.getElementById("txtid")["value"];
