@@ -10,6 +10,7 @@ import styles from './CrudDemoWebPart.module.scss';
 import * as strings from 'CrudDemoWebPartStrings';
 
 import {ISPHttpClientOptions,SPHttpClient,SPHttpClientResponse} from '@microsoft/sp-http';
+import { ISoftwareListItems } from './ISoftwareListItems';
 
 export interface ICrudDemoWebPartProps {
   description: string;
@@ -21,6 +22,15 @@ export default class CrudDemoWebPart extends BaseClientSideWebPart<ICrudDemoWebP
     this.domElement.innerHTML = `
     <div>
     <table border="1">
+    <tr>
+    <td>Please enter software ID
+    </td>
+    <td><input type="text" id="txtid">
+    </td>
+    <td><input type="submit" id="btnRead" value="Read Details" />
+    </td>
+    </tr>
+
     <tr>
     <td>Software Title
     </td>
@@ -49,8 +59,32 @@ export default class CrudDemoWebPart extends BaseClientSideWebPart<ICrudDemoWebP
     this.domElement.querySelector("#btnSubmit").addEventListener('click',()=>{
       this.addListItem();
     });
+    this.domElement.querySelector("#btnRead").addEventListener('click',()=>{
+      this.readListData();
+    });
   }
 
+  private readListData():void{
+    let id:string=document.getElementById("txtid")["value"];
+    this._getListItemByID(id).then(listitem=>{
+     document.getElementById('txtSoftwareTitle')["value"]=listitem.SoftwareTitle;
+     document.getElementById('txtSoftwareName')["value"]=listitem.SoftwareName;
+    });
+
+  }
+
+  private _getListItemByID(Id:string):Promise<ISoftwareListItems>{
+    const url:string=this.context.pageContext.site.absoluteUrl+"/_api/web/lists/getbytitle('SoftwareList')/Items?$filter=ID eq "+Id;
+    return this.context.spHttpClient.get(url,SPHttpClient.configurations.v1).then((response:SPHttpClientResponse)=>{
+      return response.json();
+    }).then((listItems:any)=>{
+      const item:any=listItems.value[0];
+      const listItem:ISoftwareListItems=item as ISoftwareListItems;
+      return listItem;
+    }) as Promise<ISoftwareListItems>;
+  }
+
+  //send data to sharepoint
   private addListItem(){
     var softwareTitle=document.getElementById('txtSoftwareTitle')["value"];
     var softwareName=document.getElementById('txtSoftwareName')["value"];
@@ -59,15 +93,15 @@ export default class CrudDemoWebPart extends BaseClientSideWebPart<ICrudDemoWebP
     console.log("-----------");
     console.log(softwareName);
     console.log(this.context.pageContext.site.absoluteUrl);
-    const siteUrl:string=this.context.pageContext.site.absoluteUrl+"/_api/web/lists/GetByTitle('SampleList')/items";
-    // const itemBody:any={
-    //   "SoftwareTitle":softwareTitle,
-    //   "SoftwareName":softwareName
-    // }
+    const siteUrl:string=this.context.pageContext.site.absoluteUrl+"/_api/web/lists/GetByTitle('SoftwareList')/items";
     const itemBody:any={
-      "Title":softwareTitle,
-      "Name":softwareName
+      "SoftwareTitle":softwareTitle,
+      "SoftwareName":softwareName
     }
+    // const itemBody:any={
+    //   "Title":softwareTitle,
+    //   "Name":softwareName
+    // }
 
     const spHttpClientOptions:ISPHttpClientOptions={
       "body":JSON.stringify(itemBody)
