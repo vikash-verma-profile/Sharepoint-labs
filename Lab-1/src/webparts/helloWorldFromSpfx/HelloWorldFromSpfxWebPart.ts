@@ -1,7 +1,8 @@
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
-  PropertyPaneTextField
+  PropertyPaneTextField,
+  PropertyPaneToggle
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { escape } from '@microsoft/sp-lodash-subset';
@@ -16,6 +17,8 @@ export interface IHelloWorldFromSpfxWebPartProps {
   quantity:number;
   dicount:number;
   netbillamount:number;
+  currentTime:Date;
+  IsCertified:boolean;
 }
 
 
@@ -35,6 +38,10 @@ export default class HelloWorldFromSpfxWebPart extends BaseClientSideWebPart<IHe
           resolve(undefined);
 
       });
+  }
+
+  protected get disableReactivePropertyChanges():boolean{
+    return true;
   }
   public render(): void {
     this.domElement.innerHTML = `
@@ -62,6 +69,11 @@ export default class HelloWorldFromSpfxWebPart extends BaseClientSideWebPart<IHe
              <tr>
              <td>Bill Amount</td>
              <td>${this.properties.netbillamount=this.properties.productcost*this.properties.quantity}</td>
+             </tr>
+
+             <tr>
+             <td>Is Certified ?</td>
+             <td>${this.properties.IsCertified}</td>
              </tr>
              </table>
             </div>
@@ -130,6 +142,12 @@ protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
                     resizable:false,
                     deferredValidationTime:5000,
                     placeholder:"Please enter product quantity","description":"Number property field"
+                  }),
+                  PropertyPaneToggle('IsCertified', {
+                    label: "Is it Certified",
+                    key:'IsCertified',
+                    onText:'ISI Certified',
+                    offText:"Not an ISI Certified Product"
                   }),
                 ]
               }
