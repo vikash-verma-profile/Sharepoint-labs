@@ -1,6 +1,7 @@
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
+  PropertyPaneSlider,
   PropertyPaneTextField,
   PropertyPaneToggle
 } from '@microsoft/sp-property-pane';
@@ -19,6 +20,7 @@ export interface IHelloWorldFromSpfxWebPartProps {
   netbillamount:number;
   currentTime:Date;
   IsCertified:boolean;
+  Rating:number;
 }
 
 
@@ -74,6 +76,10 @@ export default class HelloWorldFromSpfxWebPart extends BaseClientSideWebPart<IHe
              <tr>
              <td>Is Certified ?</td>
              <td>${this.properties.IsCertified}</td>
+             </tr>
+             <tr>
+             <td>Rating</td>
+             <td>${this.properties.Rating}</td>
              </tr>
              </table>
             </div>
@@ -148,6 +154,14 @@ protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
                     key:'IsCertified',
                     onText:'ISI Certified',
                     offText:"Not an ISI Certified Product"
+                  }),
+                  PropertyPaneSlider('Rating', {
+                    label: "Select Your Rating",
+                    min:1,
+                    max:100,
+                    step:1,
+                    showValue:true,
+                    value:1
                   }),
                 ]
               }
