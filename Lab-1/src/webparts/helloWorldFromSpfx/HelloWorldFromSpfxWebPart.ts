@@ -1,56 +1,53 @@
-import { Version } from '@microsoft/sp-core-library';
+import { Version } from "@microsoft/sp-core-library";
 import {
   IPropertyPaneConfiguration,
+  PropertyPaneChoiceGroup,
   PropertyPaneSlider,
   PropertyPaneTextField,
-  PropertyPaneToggle
-} from '@microsoft/sp-property-pane';
-import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { escape } from '@microsoft/sp-lodash-subset';
+  PropertyPaneToggle,
+} from "@microsoft/sp-property-pane";
+import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
+import { escape } from "@microsoft/sp-lodash-subset";
 
-import styles from './HelloWorldFromSpfxWebPart.module.scss';
-import * as strings from 'HelloWorldFromSpfxWebPartStrings';
+import styles from "./HelloWorldFromSpfxWebPart.module.scss";
+import * as strings from "HelloWorldFromSpfxWebPartStrings";
 
 export interface IHelloWorldFromSpfxWebPartProps {
   description: string;
-  productname:string;
-  productcost:number;
-  quantity:number;
-  dicount:number;
-  netbillamount:number;
-  currentTime:Date;
-  IsCertified:boolean;
-  Rating:number;
+  productname: string;
+  productcost: number;
+  quantity: number;
+  dicount: number;
+  netbillamount: number;
+  currentTime: Date;
+  IsCertified: boolean;
+  Rating: number;
+  processortype:string;
 }
 
-
-
 export default class HelloWorldFromSpfxWebPart extends BaseClientSideWebPart<IHelloWorldFromSpfxWebPartProps> {
-
-
-  protected onInit():Promise<void>{
+  protected onInit(): Promise<void> {
     console.log("Hi i am loaded !!");
     console.log(this.properties.productname);
-      return new Promise<void>((resolve,_reject)=>{
-          this.properties.productname="Mouse";
-          this.properties.description="Mouse Description";
-          this.properties.quantity=500;
-          this.properties.productcost=300;
+    return new Promise<void>((resolve, _reject) => {
+      this.properties.productname = "Mouse";
+      this.properties.description = "Mouse Description";
+      this.properties.quantity = 500;
+      this.properties.productcost = 300;
 
-          resolve(undefined);
-
-      });
+      resolve(undefined);
+    });
   }
 
-  protected get disableReactivePropertyChanges():boolean{
+  protected get disableReactivePropertyChanges(): boolean {
     return true;
   }
   public render(): void {
     this.domElement.innerHTML = `
-      <div class="${ styles.helloWorldFromSpfx }">
-        <div class="${ styles.container }">
-          <div class="${ styles.row }">
-            <div class="${ styles.column }">
+      <div class="${styles.helloWorldFromSpfx}">
+        <div class="${styles.container}">
+          <div class="${styles.row}">
+            <div class="${styles.column}">
              <table>
              <tr>
              <td>Product Name</td>
@@ -70,7 +67,8 @@ export default class HelloWorldFromSpfxWebPart extends BaseClientSideWebPart<IHe
              </tr>
              <tr>
              <td>Bill Amount</td>
-             <td>${this.properties.netbillamount=this.properties.productcost*this.properties.quantity}</td>
+             <td>${(this.properties.netbillamount =
+               this.properties.productcost * this.properties.quantity)}</td>
              </tr>
 
              <tr>
@@ -81,6 +79,10 @@ export default class HelloWorldFromSpfxWebPart extends BaseClientSideWebPart<IHe
              <td>Rating</td>
              <td>${this.properties.Rating}</td>
              </tr>
+             <tr>
+             <td>Processor Type</td>
+             <td>${this.properties.processortype}</td>
+             </tr>
              </table>
             </div>
           </div>
@@ -89,7 +91,7 @@ export default class HelloWorldFromSpfxWebPart extends BaseClientSideWebPart<IHe
   }
 
   protected get dataVersion(): Version {
-    return Version.parse('1.0');
+    return Version.parse("1.0");
   }
 
   // protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
@@ -113,62 +115,73 @@ export default class HelloWorldFromSpfxWebPart extends BaseClientSideWebPart<IHe
   //     ]
   //   };
   // }
-protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-  return{
-        pages: [
-          {
-            groups: [
-              {
-                groupName: "Product Details",
-                groupFields: [
-                  PropertyPaneTextField('productname', {  
-                    label: "Product Name",
-                    multiline:false,
-                    resizable:false,
-                    deferredValidationTime:5000,
-                    placeholder:"Please enter product name","description":"Name property field"
-                  }),
-                  PropertyPaneTextField('description', {
-                    label: "Product Description",
-                    multiline:true,
-                    resizable:false,
-                    deferredValidationTime:5000,
-                    placeholder:"Please enter product Description","description":"Name property field"
-                  }),
-                    PropertyPaneTextField('productcost', {
-                    label: "Product Cost",
-                    multiline:false,
-                    resizable:false,
-                    deferredValidationTime:5000,
-                    placeholder:"Please enter product Cost","description":"Number property field"
-                  }),
-                  PropertyPaneTextField('quantity', {
-                    label: "Product Quantity",
-                    multiline:false,
-                    resizable:false,
-                    deferredValidationTime:5000,
-                    placeholder:"Please enter product quantity","description":"Number property field"
-                  }),
-                  PropertyPaneToggle('IsCertified', {
-                    label: "Is it Certified",
-                    key:'IsCertified',
-                    onText:'ISI Certified',
-                    offText:"Not an ISI Certified Product"
-                  }),
-                  PropertyPaneSlider('Rating', {
-                    label: "Select Your Rating",
-                    min:1,
-                    max:100,
-                    step:1,
-                    showValue:true,
-                    value:1
-                  }),
-                ]
-              }
-            ]
-          }
-        ]
-      };
-}
-
+  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+    return {
+      pages: [
+        {
+          groups: [
+            {
+              groupName: "Product Details",
+              groupFields: [
+                PropertyPaneTextField("productname", {
+                  label: "Product Name",
+                  multiline: false,
+                  resizable: false,
+                  deferredValidationTime: 5000,
+                  placeholder: "Please enter product name",
+                  description: "Name property field",
+                }),
+                PropertyPaneTextField("description", {
+                  label: "Product Description",
+                  multiline: true,
+                  resizable: false,
+                  deferredValidationTime: 5000,
+                  placeholder: "Please enter product Description",
+                  description: "Name property field",
+                }),
+                PropertyPaneTextField("productcost", {
+                  label: "Product Cost",
+                  multiline: false,
+                  resizable: false,
+                  deferredValidationTime: 5000,
+                  placeholder: "Please enter product Cost",
+                  description: "Number property field",
+                }),
+                PropertyPaneTextField("quantity", {
+                  label: "Product Quantity",
+                  multiline: false,
+                  resizable: false,
+                  deferredValidationTime: 5000,
+                  placeholder: "Please enter product quantity",
+                  description: "Number property field",
+                }),
+                PropertyPaneToggle("IsCertified", {
+                  label: "Is it Certified",
+                  key: "IsCertified",
+                  onText: "ISI Certified",
+                  offText: "Not an ISI Certified Product",
+                }),
+                PropertyPaneSlider("Rating", {
+                  label: "Select Your Rating",
+                  min: 1,
+                  max: 100,
+                  step: 1,
+                  showValue: true,
+                  value: 1,
+                }),
+                PropertyPaneChoiceGroup("processortype", {
+                  label: "Choices",
+                  options: [
+                    { key: "I5", text: "Intel I5" },
+                    { key: "I7", text: "Intel I7", checked: true },
+                    { key: "I9", text: "Intel I9" },
+                  ],
+                }),
+              ],
+            },
+          ],
+        },
+      ],
+    };
+  }
 }
